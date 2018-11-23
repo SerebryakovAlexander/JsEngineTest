@@ -1,11 +1,10 @@
 package ru.raiffeisen.JsEngineTest;
 
 import org.springframework.core.io.ClassPathResource;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.PostConstruct;
+import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
 import java.io.BufferedReader;
@@ -31,7 +30,7 @@ public class JsTestController {
 
             StringBuilder builder = new StringBuilder();
 
-            //Store the contents of the file to the StringBuilder.
+            // Store the contents of the file to the StringBuilder.
 
             while((inputLine = rd.readLine()) != null) {
 
@@ -48,14 +47,16 @@ public class JsTestController {
         }
     }
 
-    @GetMapping(path = "JsTest")
-    public String testJs(@RequestParam String requestObject) throws Exception
+    @PostMapping(path = "JsTest")
+    public String testJs(@RequestBody String requestObject) throws Exception
     {
         ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
 
-        Object result = engine.eval(scriptText);
+        engine.eval(scriptText);
 
-        return "OK" + scriptText;
+        Object result = ((Invocable)engine).invokeFunction("ruleMain", requestObject);
+
+        return "OK " + result.toString();
     }
 
 }

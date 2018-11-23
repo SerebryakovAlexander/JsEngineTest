@@ -1,3 +1,6 @@
-var a = 1;
-var b = 2;
-var c = a + b;
+function ruleMain(inputObject)
+{
+    var rurPayment = JSON.parse(inputObject);
+
+    return 'Hello world ' + rurPayment.accountBen;
+}

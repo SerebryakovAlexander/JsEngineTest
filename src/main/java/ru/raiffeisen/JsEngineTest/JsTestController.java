@@ -47,16 +47,16 @@ public class JsTestController {
         }
     }
 
-    @PostMapping(path = "JsTest")
-    public String testJs(@RequestBody String requestObject) throws Exception
-    {
-        ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
+    final private ScriptEngine engine = new ScriptEngineManager().getEngineByName("nashorn");
 
+    @PostMapping(path = "JsTest")
+    public Object testJs(@RequestBody String requestObject) throws Exception
+    {
         engine.eval(scriptText);
 
         Object result = ((Invocable)engine).invokeFunction("ruleMain", requestObject);
 
-        return "OK " + result.toString();
+        return result;
     }
 
 }

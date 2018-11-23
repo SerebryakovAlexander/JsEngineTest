@@ -11,7 +11,7 @@ function ruleMain(inputObject)
     var a1 = rurPayment.accountBen.substr(0,5);
     var a2 = rurPayment.accountCli.substr(0,5);
 
-    if (['40702','12345','54321'].indexOf(a1) > -1)
+    if (['40702','12345','54321','44444','32145','09876'].indexOf(a1) > -1)
     {
         result.code = 'VKOK';
     }
@@ -19,6 +19,11 @@ function ruleMain(inputObject)
     if (['40702','12345','54321'].indexOf(a2) > -1)
     {
         result.code = 'VKOK';
+    }
+
+    if (rurPayment.narrative.search(/^{VO\d\d\d\d\d}/i) > -1)
+    {
+        result.code = "VKOK";
     }
 
     return result;
